@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgba(33, 150, 218, 0.973);
+  
+  /* Ruta corregida a la imagen de fondo */
+  background-image: url('./imagenes/fondo3.jpg'); 
+
+  /* Ajustes para el fondo */
+  background-size: cover; /* La imagen cubre toda la pantalla */
+  background-repeat: no-repeat; /* No se repite la imagen */
+  background-position: center; /* Se centra la imagen */
+  background-attachment: fixed; /* Fondo fijo al hacer scroll */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Estilos para InfoSection */
+.InfoSection {
+  background: rgba(57, 206, 11, 0.5); /* Se ajustó la opacidad para mejor visualización */
+  padding: 20px; /* Se agregó relleno para mejorar el diseño */
+  border-radius: 8px; /* Bordes redondeados */
+}
