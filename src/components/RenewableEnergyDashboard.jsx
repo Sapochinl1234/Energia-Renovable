@@ -18,34 +18,34 @@ import {
 import { Typography } from "@mui/material";  // Importación de Typography
 
 const dataBar = [
-  { source: "Wind", value: 200 },
-  { source: "Solar", value: 150 },
-  { source: "Hydropower", value: 300 },
-  { source: "Biofuel", value: 100 },
-  { source: "Geothermal", value: 80 },
+  { fuente: "Eólica", valor: 200 },
+  { fuente: "Solar", valor: 150 },
+  { fuente: "Hidroeléctrica", valor: 300 },
+  { fuente: "Biocombustible", valor: 100 },
+  { fuente: "Geotérmica", valor: 80 },
 ];
 
 const dataPie = [
-  { source: "Renewables", value: 60 },
-  { source: "Wind", value: 25 },
-  { source: "Solar", value: 20 },
-  { source: "Hydro", value: 15 },
+  { fuente: "Renovables", valor: 60 },
+  { fuente: "Eólica", valor: 25 },
+  { fuente: "Solar", valor: 20 },
+  { fuente: "Hidroeléctrica", valor: 15 },
 ];
 
 const dataLine = [
-  { year: 2015, wind: 50, solar: 30, geothermal: 20 },
-  { year: 2016, wind: 70, solar: 50, geothermal: 25 },
-  { year: 2017, wind: 90, solar: 70, geothermal: 30 },
-  { year: 2018, wind: 110, solar: 90, geothermal: 40 },
-  { year: 2019, wind: 130, solar: 120, geothermal: 50 },
+  { año: 2015, renovable: 100, convencional: 300 },
+  { año: 2016, renovable: 150, convencional: 290 },
+  { año: 2017, renovable: 200, convencional: 280 },
+  { año: 2018, renovable: 250, convencional: 270 },
+  { año: 2019, renovable: 300, convencional: 260 },
 ];
 
 const dataArea = [
-  { year: 2015, renewable: 100, conventional: 300 },
-  { year: 2016, renewable: 150, conventional: 290 },
-  { year: 2017, renewable: 200, conventional: 280 },
-  { year: 2018, renewable: 250, conventional: 270 },
-  { year: 2019, renewable: 300, conventional: 260 },
+  { año: 2015, renovable: 100, convencional: 300 },
+  { año: 2016, renovable: 150, convencional: 290 },
+  { año: 2017, renovable: 200, convencional: 280 },
+  { año: 2018, renovable: 250, convencional: 270 },
+  { año: 2019, renovable: 300, convencional: 260 },
 ];
 
 const RenewableEnergyDashboard = () => {
@@ -59,11 +59,11 @@ const RenewableEnergyDashboard = () => {
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={dataBar}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="source" />
+            <XAxis dataKey="fuente" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="value" fill="#82ca9d" />
+            <Bar dataKey="valor" fill="#82ca9d" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -79,8 +79,8 @@ const RenewableEnergyDashboard = () => {
             <Legend />
             <Pie
               data={dataPie}
-              dataKey="value"
-              nameKey="source"
+              dataKey="valor"
+              nameKey="fuente"
               cx="50%"
               cy="50%"
               outerRadius={100}
@@ -99,13 +99,13 @@ const RenewableEnergyDashboard = () => {
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={dataLine}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" />
+            <XAxis dataKey="anio" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="wind" stroke="#8884d8" />
+            <Line type="monotone" dataKey="eolica" stroke="#8884d8" />
             <Line type="monotone" dataKey="solar" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="geothermal" stroke="#ffc658" />
+            <Line type="monotone" dataKey="geotermica" stroke="#ffc658" />
           </LineChart>
         </ResponsiveContainer>
       </div>
@@ -124,14 +124,14 @@ const RenewableEnergyDashboard = () => {
             <Legend />
             <Area
               type="monotone"
-              dataKey="renewable"
+              dataKey="renovable"
               stackId="1"
               stroke="#82ca9d"
               fill="#82ca9d"
             />
             <Area
               type="monotone"
-              dataKey="conventional"
+              dataKey="convencional"
               stackId="1"
               stroke="#ffc658"
               fill="#ffc658"
