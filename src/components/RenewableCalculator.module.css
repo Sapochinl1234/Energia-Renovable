@@ -1,0 +1,58 @@
+.background {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(to right,#2c3e50, #4ca1af);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.calculatorBox {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.title {
+  font-weight: bold;
+  color: #333;
+}
+
+.inputField {
+  margin-top: 10px;
+}
+
+.buttonContainer {
+  margin-top: 20px;
+}
+
+.calculateButton {
+  width: 100%;
+}
+
+.resultsContainer {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.resultText {
+  margin: 5px 0;
+  font-weight: bold;
+  color: #555;
+}
+
+.chartContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

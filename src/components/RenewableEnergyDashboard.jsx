@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+import html2canvas from "html2canvas";
 import {
   BarChart,
   Bar,
@@ -15,129 +16,145 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { Typography } from "@mui/material";  // Importación de Typography
+import { Typography, Button } from "@mui/material";
+import styles from "./RenewableEnergyDashboard.module.css";
+import fffImage from "../imagenes/fff.jpg"; 
 
+// Datos filtrados solo para Colombia
 const dataBar = [
-  { fuente: "Eólica", valor: 200 },
-  { fuente: "Solar", valor: 150 },
-  { fuente: "Hidroeléctrica", valor: 300 },
-  { fuente: "Biocombustible", valor: 100 },
-  { fuente: "Geotérmica", valor: 80 },
+  { fuente: "Eólica", valor: 180 },
+  { fuente: "Solar", valor: 140 },
+  { fuente: "Hidroeléctrica", valor: 350 },
+  { fuente: "Biocombustible", valor: 90 },
+  { fuente: "Geotérmica", valor: 70 },
 ];
 
 const dataPie = [
-  { fuente: "Renovables", valor: 60 },
-  { fuente: "Eólica", valor: 25 },
-  { fuente: "Solar", valor: 20 },
-  { fuente: "Hidroeléctrica", valor: 15 },
+  { fuente: "Renovables", valor: 65 },
+  { fuente: "Eólica", valor: 30 },
+  { fuente: "Solar", valor: 25 },
+  { fuente: "Hidroeléctrica", valor: 10 },
 ];
 
 const dataLine = [
-  { año: 2015, renovable: 100, convencional: 300 },
-  { año: 2016, renovable: 150, convencional: 290 },
-  { año: 2017, renovable: 200, convencional: 280 },
-  { año: 2018, renovable: 250, convencional: 270 },
-  { año: 2019, renovable: 300, convencional: 260 },
+  { año: 2015, renovable: 120, convencional: 280 },
+  { año: 2016, renovable: 160, convencional: 270 },
+  { año: 2017, renovable: 210, convencional: 260 },
+  { año: 2018, renovable: 270, convencional: 250 },
+  { año: 2019, renovable: 320, convencional: 240 },
 ];
 
-const dataArea = [
-  { año: 2015, renovable: 100, convencional: 300 },
-  { año: 2016, renovable: 150, convencional: 290 },
-  { año: 2017, renovable: 200, convencional: 280 },
-  { año: 2018, renovable: 250, convencional: 270 },
-  { año: 2019, renovable: 300, convencional: 260 },
-];
+const dataArea = [...dataLine];
 
 const RenewableEnergyDashboard = () => {
+  const barChartRef = useRef(null);
+  const pieChartRef = useRef(null);
+  const lineChartRef = useRef(null);
+  const areaChartRef = useRef(null);
+
+  const downloadChart = (chartRef, fileName) => {
+    if (chartRef.current) {
+      html2canvas(chartRef.current).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = `${fileName}.png`;
+        link.click();
+      });
+    }
+  };
+
   return (
-    <div className="p-4 grid gap-4 grid-cols-2">
-      {/* Bar Chart */}
-      <div className="card bg-white shadow rounded-lg p-4">
-        <Typography variant="h6" style={{ color: "white" }} gutterBottom>
-          Producción de Energía Renovable por Fuente
+    <div className  style={{ backgroundImage: `url(${fffImage})` }}>
+      <div className={styles.chartCard}>
+        <Typography variant="h5" className={styles.chartTitle}>
+          Producción de Energía Renovable en Colombia
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={dataBar}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="fuente" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="valor" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className={styles.chartWrapper} ref={barChartRef}>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={dataBar}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+              <XAxis dataKey="fuente" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="valor" fill="#28a745" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <Button onClick={() => downloadChart(barChartRef, "bar_chart_colombia")}>
+          Descargar 📥
+        </Button>
       </div>
 
-      {/* Pie Chart */}
-      <div className="card bg-white shadow rounded-lg p-4">
-        <Typography variant="h6" style={{ color: "white" }} gutterBottom>
-          Participación de Energías Renovables
+      <div className={styles.chartCard}>
+        <Typography variant="h5" className={styles.chartTitle}>
+          Participación de Energías Renovables en Colombia
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Tooltip />
-            <Legend />
-            <Pie
-              data={dataPie}
-              dataKey="valor"
-              nameKey="fuente"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            />
-          </PieChart>
-        </ResponsiveContainer>
+        <div className={styles.chartWrapper} ref={pieChartRef}>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Tooltip />
+              <Legend />
+              <Pie
+                data={dataPie}
+                dataKey="valor"
+                nameKey="fuente"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#007bff"
+                label
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <Button onClick={() => downloadChart(pieChartRef, "pie_chart_colombia")}>
+          Descargar 📥
+        </Button>
       </div>
 
-      {/* Line Chart */}
-      <div className="card bg-white shadow rounded-lg p-4 col-span-2">
-        <Typography variant="h6" style={{ color: "white" }} gutterBottom>
-          Tendencia en la Capacidad Instalada
+      <div className={styles.chartCardWide}>
+        <Typography variant="h5" className={styles.chartTitle}>
+          Tendencia de Capacidad Instalada en Colombia
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={dataLine}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="anio" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="eolica" stroke="#8884d8" />
-            <Line type="monotone" dataKey="solar" stroke="#82ca9d" />
-            <Line type="monotone" dataKey="geotermica" stroke="#ffc658" />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className={styles.chartWrapper} ref={lineChartRef}>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={dataLine}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+              <XAxis dataKey="año" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="renovable" stroke="#ff9800" />
+              <Line type="monotone" dataKey="convencional" stroke="#e91e63" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+        <Button onClick={() => downloadChart(lineChartRef, "line_chart_colombia")}>
+          Descargar 📥
+        </Button>
       </div>
 
-      {/* Area Chart */}
-      <div className="card bg-white shadow rounded-lg p-4 col-span-2">
-        <Typography variant="h6" style={{ color: "white" }} gutterBottom>
-          Comparación entre Consumo de Energía Renovable y Convencional
+      <div className={styles.chartCardWide}>
+        <Typography variant="h5" className={styles.chartTitle}>
+          Comparación Consumo Renovable vs Convencional en Colombia
         </Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={dataArea}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Area
-              type="monotone"
-              dataKey="renovable"
-              stackId="1"
-              stroke="#82ca9d"
-              fill="#82ca9d"
-            />
-            <Area
-              type="monotone"
-              dataKey="convencional"
-              stackId="1"
-              stroke="#ffc658"
-              fill="#ffc658"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <div className={styles.chartWrapper} ref={areaChartRef}>
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={dataArea}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+              <XAxis dataKey="año" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Area type="monotone" dataKey="renovable" stackId="1" stroke="#4caf50" fill="#4caf50" />
+              <Area type="monotone" dataKey="convencional" stackId="1" stroke="#f44336" fill="#f44336" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+        <Button onClick={() => downloadChart(areaChartRef, "area_chart_colombia")}>
+          Descargar 📥
+        </Button>
       </div>
     </div>
   );

@@ -1,17 +1,22 @@
-import React, { useState } from "react";
-import { AppBar, Toolbar, Button, Box } from "@mui/material";
-import TableChartIcon from "@mui/icons-material/TableChart"; // Icono para Tabla de Datos
-import CalculateIcon from "@mui/icons-material/Calculate"; // Icono para Calculadora
-import InfoIcon from "@mui/icons-material/Info"; // Icono para Información
-import DashboardIcon from "@mui/icons-material/Dashboard"; // Icono para Dashboard
+import React, { useState } from "react"; // Importa React y el hook useState para manejar el estado
+import { AppBar, Toolbar, Button, Box } from "@mui/material"; // Importa componentes de Material-UI para la interfaz
+import TableChartIcon from "@mui/icons-material/TableChart"; // Icono para la sección de tabla de datos
+import CalculateIcon from "@mui/icons-material/Calculate"; // Icono para la calculadora
+import InfoIcon from "@mui/icons-material/Info"; // Icono para la sección de información
+import DashboardIcon from "@mui/icons-material/Dashboard"; // Icono para el dashboard
+
+// Importación de los componentes a mostrar en la interfaz
 import DataTable from "./DataTable";
 import RenewableCalculator from "./RenewableCalculator";
 import InfoSection from "./InfoSection";
-import RenewableEnergyDashboard from "./RenewableEnergyDashboard"; // Importa el componente de gráficos
+import RenewableEnergyDashboard from "./RenewableEnergyDashboard";
+import styles from "./Menu.module.css"; // Importación de los estilos CSS del componente
 
 const Menu = () => {
-  const [currentComponent, setCurrentComponent] = useState("info"); // Mostrar Información al inicio
+  // Estado para controlar qué componente se está mostrando en la interfaz
+  const [currentComponent, setCurrentComponent] = useState("info");
 
+  // Función que determina qué componente se debe renderizar según el estado actual
   const renderComponent = () => {
     switch (currentComponent) {
       case "table":
@@ -23,50 +28,57 @@ const Menu = () => {
       case "dashboard":
         return <RenewableEnergyDashboard />;
       default:
-        return <InfoSection />; // Muestra la sección de información por defecto
+        return <InfoSection />; // Si el estado no coincide con ningún caso, muestra la sección de información por defecto
     }
   };
 
   return (
     <>
-      {/* Barra de navegación */}
-      <AppBar position="static">
-        <Toolbar>
-          <Box sx={{ display: "flex", flexGrow: 1 }}>
+      {/* Barra de navegación con botones para cambiar entre secciones */}
+      <AppBar position="static" className={styles.appBar}>
+        <Toolbar className={styles.toolbar}>
+          <Box className={styles.buttonContainer}>
+            {/* Botón para mostrar la tabla de datos */}
             <Button
-              color="inherit"
+              className={styles.button}
               startIcon={<TableChartIcon />} 
               onClick={() => setCurrentComponent("table")}
             >
               Tabla de Datos
             </Button>
+
+            {/* Botón para mostrar la calculadora de energía renovable */}
             <Button
-              color="inherit"
+              className={styles.button}
               startIcon={<CalculateIcon />} 
               onClick={() => setCurrentComponent("calculator")}
             >
-              Calculadora
+              Cálculo de Energía
             </Button>
+
+            {/* Botón para mostrar la sección de información */}
             <Button
-              color="inherit"
+              className={styles.button}
               startIcon={<InfoIcon />} 
               onClick={() => setCurrentComponent("info")}
             >
               Información
             </Button>
+
+            {/* Botón para mostrar el dashboard de producción y consumo de energía */}
             <Button
-              color="inherit"
+              className={styles.button}
               startIcon={<DashboardIcon />} 
               onClick={() => setCurrentComponent("dashboard")}
             >
-              Producción y consumo de energía
+              Producción y Consumo de Energía
             </Button>
           </Box>
         </Toolbar>
       </AppBar>
 
-      {/* Renderiza el componente seleccionado */}
-      <Box sx={{ padding: 4 }}>{renderComponent()}</Box>
+      {/* Contenedor donde se mostrará el componente seleccionado */}
+      <Box className={styles.content}>{renderComponent()}</Box>
     </>
   );
 };

@@ -1,117 +1,115 @@
-import React, { useState } from "react";
-import DataTable from "./DataTable";
+import React, { useState, useMemo } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import CalculateIcon from "@mui/icons-material/Calculate";
+import styles from "./RenewableCalculator.module.css"; // Importamos el CSS separado
 
 const RenewableCalculator = () => {
-  const [data, setData] = useState([]);
-  const [totalCapacity, setTotalCapacity] = useState(0);
+  const [totalConsumption, setTotalConsumption] = useState("");
   const [renewablePercentage, setRenewablePercentage] = useState(0);
   const [renewableConsumption, setRenewableConsumption] = useState(0);
-  const [totalConsumption, setTotalConsumption] = useState("");
+  const [renewableCapacityTotal, setRenewableCapacityTotal] = useState(0);
 
-  const handleDataLoad = (loadedData) => {
-    setData(loadedData);
-  };
+  const totalColombiaConsumption = 70000; // GWh (supuesto consumo total anual de Colombia)
+  const renewableCapacity = 1871; // MW (capacidad instalada de energía renovable en Colombia)
+  const capacityFactor = 0.32; // Factor de capacidad actualizado
+
+  const renewableProduction = useMemo(() => {
+    return (renewableCapacity * capacityFactor * 8760) / 1000; // GWh/año
+  }, [renewableCapacity, capacityFactor]);
+
+  const calculatedRenewablePercentage = useMemo(() => {
+    return (renewableProduction / totalColombiaConsumption) * 100;
+  }, [renewableProduction, totalColombiaConsumption]);
 
   const calculateRenewables = () => {
-    if (!data || data.length === 0) return;
+    const totalConsumptionValue = parseFloat(totalConsumption);
+    if (isNaN(totalConsumptionValue) || totalConsumptionValue <= 0) {
+      setRenewablePercentage(0);
+      setRenewableConsumption(0);
+      setRenewableCapacityTotal(0);
+      return;
+    }
 
-    const renewableData = data.map((row) =>
-      parseFloat(row["Renewables (% equivalent primary energy)"] || 0)
-    );
-    const totalRenewable =
-      renewableData.reduce((acc, curr) => acc + curr, 0) / renewableData.length;
+    const renewableEnergyUsage = (calculatedRenewablePercentage / 100) * totalConsumptionValue;
+    const renewableCapacityTotalValue = renewableProduction * 1000; // Convertir a kWh
 
-    const renewableCapacity = totalRenewable / 100;
-    setTotalCapacity(renewableCapacity);
-
-    const renewablePercent = (renewableCapacity * totalConsumption) / 100;
-    setRenewablePercentage(totalRenewable);
-    setRenewableConsumption(renewablePercent);
+    setRenewablePercentage(calculatedRenewablePercentage);
+    setRenewableConsumption(renewableEnergyUsage);
+    setRenewableCapacityTotal(renewableCapacityTotalValue);
   };
 
   const COLORS = ["#4CAF50", "#F44336"];
 
   return (
-    <Box sx={{ padding: 4, textAlign: "center" }}>
-      <DataTable onDataLoad={handleDataLoad} />
+    <Box className={styles.background}>
+      <Box className={styles.container}>
+        <Box className={styles.calculatorBox}>
+          <Typography variant="h5" gutterBottom className={styles.title}>
+            Calculo de Energía Renovable en Colombia
+          </Typography>
 
-      <Box sx={{ marginTop: 4 }}>
-        <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
-          Calculadora de Energía Renovable
-        </Typography>
+          <TextField
+            label="Consumo Total (kWh)"
+            variant="outlined"
+            fullWidth
+            value={totalConsumption}
+            onChange={(e) => setTotalConsumption(e.target.value)}
+            className={styles.inputField}
+          />
 
-        <TextField
-          label="Consumo Total (kWh)"
-          variant="outlined"
-          fullWidth
-          value={totalConsumption}
-          onChange={(e) => setTotalConsumption(e.target.value)}
-          sx={{
-            marginBottom: 2,
-            input: { color: "white" },
-            label: { color: "white" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "white" },
-              "&:hover fieldset": { borderColor: "white" },
-              "&.Mui-focused fieldset": { borderColor: "white" },
-            },
-          }}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={calculateRenewables}
-          sx={{ marginBottom: 2 }}
-          startIcon={<CalculateIcon />}
-        >
-          Calcular
-        </Button>
-
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Capacidad Renovable Total: {totalCapacity.toFixed(2)} GW
-        </Typography>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Porcentaje de Energía Renovable: {renewablePercentage.toFixed(2)}%
-        </Typography>
-        <Typography variant="h6" sx={{ color: "white" }}>
-          Consumo Renovable Aproximado: {renewableConsumption.toFixed(2)} kWh
-        </Typography>
-
-        {renewablePercentage > 0 && (
-          <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
-            <PieChart width={500} height={500}>
-              <Pie
-                data={[
-                  { name: "Energía Renovable", value: renewablePercentage },
-                  { name: "No Renovable", value: 100 - renewablePercentage },
-                ]}
-                dataKey="value"
-                cx="50%"
-                cy="50%"
-                outerRadius={180}
-                innerRadius={80}
-                fill="#8884d8"
-                paddingAngle={5}
-                label={({ name, percent }) =>
-                  `${name}: ${(percent * 100).toFixed(2)}%`
-                }
-              >
-                {[
-                  { name: "Energía Renovable", value: renewablePercentage },
-                  { name: "No Renovable", value: 100 - renewablePercentage },
-                ].map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
+          <Box className={styles.buttonContainer}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={calculateRenewables}
+              className={styles.calculateButton}
+              startIcon={<CalculateIcon />}
+            >
+              Calcular
+            </Button>
           </Box>
-        )}
+
+          {totalConsumption && (
+            <Box className={styles.resultsContainer}>
+              <Typography variant="body1" className={styles.resultText}>
+                Porcentaje de Energía Renovable: {renewablePercentage.toFixed(2)}%
+              </Typography>
+              <Typography variant="body1" className={styles.resultText}>
+                Consumo Renovable Aproximado: {renewableConsumption.toFixed(2)} kWh
+              </Typography>
+              <Typography variant="body1" className={styles.resultText}>
+                Capacidad Renovable Total: {renewableCapacityTotal.toFixed(2)} kWh
+              </Typography>
+            </Box>
+          )}
+
+          {renewablePercentage > 0 && (
+            <Box className={styles.chartContainer}>
+              <PieChart width={300} height={300}>
+                <Pie
+                  data={[
+                    { name: "Energía Renovable", value: renewableConsumption },
+                    { name: "No Renovable", value: totalConsumption - renewableConsumption },
+                  ]}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={100}
+                  innerRadius={50}
+                  paddingAngle={5}
+                  label={({ name, value }) => `${name}: ${value.toFixed(2)} kWh`}
+                >
+                  {COLORS.map((color, index) => (
+                    <Cell key={`cell-${index}`} fill={color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </Box>
+          )}
+        </Box>
       </Box>
     </Box>
   );

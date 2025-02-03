@@ -1,0 +1,45 @@
+.container {
+  background: linear-gradient(to right, #2c3e50, #e3f2fd);
+  padding: 40px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.carouselContainer {
+  margin: 20px auto;
+  width: 60%;
+}
+
+.carouselImage {
+  width: 80%;
+  border-radius: 10px;
+}
+
+.videoContainer {
+  margin: 20px auto;
+  width: 60%;
+}
+
+.video {
+  width: 80%;
+  border-radius: 10px;
+}
+
+.formContainer {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.input {
+  margin: 10px 0;
+}
+
+.successMessage {
+  color: #2e7d32;
+  font-weight: bold;
+  margin-top: 20px;
+}

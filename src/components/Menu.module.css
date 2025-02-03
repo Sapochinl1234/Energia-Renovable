@@ -1,0 +1,40 @@
+.appBar {
+    background-color: #1976d2;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .button {
+    color: white !important;
+    font-size: 0.9rem;
+  }
+  
+  .content {
+    padding: 16px;
+  }
+  
+  /* Responsividad */
+  @media (max-width: 600px) {
+    .button {
+      font-size: 0.8rem;
+    }
+  }
+  
+  @media (max-width: 400px) {
+    .button {
+      font-size: 0.7rem;
+      padding: 4px;
+    }
+  }
+  
