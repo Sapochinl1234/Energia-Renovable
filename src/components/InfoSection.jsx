@@ -11,6 +11,8 @@ import RenewableEnergyImage from "../imagenes/nnn2.png";
 import WindTurbineImage from "../imagenes/aii.jpg";
 import HydroPowerImage from "../imagenes/pexels2.jpg";
 import BiomassImage from "../imagenes/pexels.jpg";
+import Solar2Image from "../imagenes/solar2.jpg";
+import EnergyImage from "../imagenes/energy.jpg";
 import SolarVideo from "../video/energíasrenovables.mp4";
 
 const mediaItems = [
@@ -47,16 +49,29 @@ const InfoSection = () => {
 
   return (
     <Box className={styles.container}>
-      <Typography variant="h3" gutterBottom>
+      <Typography variant="h3" className={styles.titulo}>
         Energía Solar: Una Fuente de Energía Limpia
       </Typography>
 
-      <Typography variant="body1" paragraph>
-        La energía solar es una de las fuentes renovables más abundantes y sostenibles.
-        Su instalación es cada vez más accesible, permitiendo a comunidades y hogares 
-        generar su propia energía limpia y reducir la dependencia de fuentes no renovables.
+      <Typography variant="body1" className={styles.textoGrande}>
+        La energía solar es una de las fuentes renovables más abundantes y sostenibles. 
+        Su instalación es cada vez más accesible, permitiendo a comunidades y hogares generar su propia energía limpia y reducir la dependencia de fuentes no renovables.
       </Typography>
 
+    
+
+      {/* Imágenes adicionales (fuera del carrusel) */}
+      <Box className={styles.extraImages}>
+        <img src={Solar2Image} alt="Energía solar en acción" className={styles.extraImage} />
+        <img src={EnergyImage} alt="Innovación en energía" className={styles.extraImage} />
+      </Box>
+
+      <Typography variant="body1" className={styles.textoGrande}>
+        El uso de la energía solar ha crecido exponencialmente en los últimos años gracias a su eficiencia y reducción de costos. 
+        Además, contribuye significativamente a la disminución de la huella de carbono y la lucha contra el cambio climático.
+      </Typography>
+
+      {/* Carrusel */}
       <Box className={styles.carouselContainer}>
         <Slider {...settings}>
           {mediaItems.map((item, index) => (
@@ -65,10 +80,12 @@ const InfoSection = () => {
         </Slider>
       </Box>
 
+      {/* Video */}
       <Box className={styles.videoContainer}>
         <video controls src={SolarVideo} className={styles.video} />
       </Box>
 
+      {/* Formulario de contacto */}
       <Box className={styles.formContainer}>
         <Typography variant="h5" gutterBottom>
           ¿Tienes dudas o comentarios? Contáctanos
